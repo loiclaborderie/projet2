@@ -14,9 +14,20 @@ class ProductsController extends AbstractController
     public function __construct(private ProductService $service)
     {
     }
-    #[Route('/', name: 'app_products', methods: 'GET')]
+    #[Route('/', name: 'get.produits', methods: 'GET')]
     public function getAll(): JsonResponse
     {
-        return $this->json($this->service->getAll());
+        $data = $this->service->getAll();
+        return $this->json($data);
+    }
+    #[Route('/{id}', name: 'get.produits.by.id', methods: 'GET')]
+    public function getById(int $id): JsonResponse
+    {
+        try {
+            $data = $this->service->getById($id);
+            return $this->json($data);
+        } catch (\Exception $e) {
+            return $this->json($e->getMessage());
+        }
     }
 }
